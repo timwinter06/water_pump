@@ -86,6 +86,9 @@ clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
 print(classification_report(y_test, y_pred, target_names=target_map.keys()))
 
+# Save input format for model
+pd.DataFrame(columns=X_test.columns).to_csv('input_data_format.csv', index=False)
+
 # Save model
 if args.model == 'lightgbm':
     clf.booster_.save_model(f'trained_{args.model}.txt')
