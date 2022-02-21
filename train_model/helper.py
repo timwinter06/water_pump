@@ -2,7 +2,6 @@
  * feature_engineer
  * preprocess
  * finalize_data
-
 """
 import pandas as pd
 
@@ -22,7 +21,7 @@ def feature_engineer(x: pd.DataFrame, replace_low_freq: list):
     x['date_recorded'] = pd.to_datetime(x.date_recorded)
     x['year'] = x['date_recorded'].dt.year
     x['month'] = x['date_recorded'].dt.month
-
+    x['year'] = x['year'] - x['year'].min()
     for col in replace_low_freq:
         x.loc[x[col].value_counts()[x[col]].values < 20, col] = "other"
     return x

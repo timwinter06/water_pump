@@ -9,12 +9,16 @@ import category_encoders as ce
 
 
 # Load model
-clf = lgb.Booster(model_file='../train_model/trained_lightgbm.txt')
+clf = lgb.Booster(model_file='trained_lightgbm.txt')
 # Load input format
-df_format = pd.read_csv('../train_model/input_data_format.csv')
+df_format = pd.read_csv('input_data_format.csv')
 # Load encoder
-file = open(f'../train_model/ordinal_encoder', 'rb')
+file = open(f'ordinal_encoder', 'rb')
 encoder = pickle.load(file)
+file.close()
+# Load target_mapping
+file = open('target_map', 'rb')
+target_map = pickle.load(file)
 file.close()
 
 
@@ -41,7 +45,7 @@ class WaterPumpFeatures(BaseModel):
     source_type: str
     source_class: str
     waterpoint_type_group: str
-    year: int
+    year: float
     month: str
 
 
@@ -73,14 +77,14 @@ def get_predictions(input_data: WaterPumpFeatures):
         'source_type': input_data.source_type,
         'source_class': input_data.source_class,
         'waterpoint_type_group': input_data.waterpoint_type_group,
-        # 'year': input_data.year,
+        'year': input_data.year,
         'month': input_data.month,
     }
     input_df = df_format.append(input_dict, ignore_index=True)
     input_df = encoder.transform(input_df)
     pred = clf.predict(input_df)
-    # prob = clf.predict_proba(input_df)
-    return pred
+    pred_dict = {key: pred[0][i] for i, key in enumerate(target_map.keys())}
+    return pred_dict
 
 
 app = FastAPI()
@@ -95,5 +99,4 @@ def root():
 @app.post("/water_pump_prediction")
 def is_user_item(request: WaterPumpFeatures):
     # Get the predictions
-    pred = get_predictions(request)
-    return {'prediction': str(pred[0])}
+    return get_predictions(request)
