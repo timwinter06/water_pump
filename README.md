@@ -1,8 +1,11 @@
 # Water-pump classifier
 
 This repo contains the code to train a classifier on water-pump data, and then serve the trained model as an API. 
-The repo contains two directories: 'train_model' and 'serve_model'. After the 'train_model.py' script in the 'train_model' is run, the 'serve_model' should contain all the necessary files to be made into a docker
+The repo contains three directories: 'notebooks', 'train_model' and 'serve_model'. After the 'train_model.py' script in the 'train_model' is run, the 'serve_model' should contain all the necessary files to be made into a docker
 container which can serve the model's prediction via an API-request. More detail is provided below. At the end a quick setup guide with instructions is provided. 
+
+## notebooks
+This directory contains notebooks that where used for data analysis, experimentation, and model testing. 
 
 ## train_model directory
 
