@@ -45,7 +45,7 @@ This quide will provide the instructions to quickly train and save the model, se
 * CD to the train_model dir. 
 * Run the following command in the prompt: ``python train_model.py --model "lightgbm" --encode "ordinal"``
 * CD to the serve_model dir.
-* Run the following command in the prompt: ``uvicorn api:app``
+* Run the following command in the prompt: ``uvicorn main:app``
 * Go to the url displayed in the terminal ( probably something like: 'http://127.0.0.1:8000')
 * Go to {YOUR_URL}/docs 
 * Under the 'water_pump_prediction' header copy and paste the 'json_test_input.json' (located in the train_model dir)
