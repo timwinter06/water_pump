@@ -43,7 +43,7 @@ For building and pushing to Google Cloud directly you can run `gcloud builds sub
 
 ## Quick setup guide
 
-This quide will provide the instructions to quickly train and save the model, set up the API (locally) to serve the model, and send a request to it and get the model's prediction.
+This guide will provide the instructions to quickly train and save the model, set up the API (locally) to serve the model, and send a request to it and get the model's prediction.
 * Make sure to install the requirements as follows: `pip install -r requirements.txt` 
 * CD to the train_model dir. 
 * Run the following command in the prompt: ``python train_model.py --model "lightgbm" --encode "ordinal"``
