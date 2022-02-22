@@ -13,6 +13,7 @@ from sklearn.metrics import classification_report
 from helper import feature_engineer, preprocess, finalize_data
 import pickle
 import json
+from sklearn.ensemble import RandomForestClassifier
 
 
 def main(args):
@@ -86,6 +87,8 @@ def main(args):
     # Train model
     if args.model == 'lightgbm':
         clf = lgb.LGBMClassifier()
+    if args.model == 'random_forest':
+        clf = RandomForestClassifier(n_jobs=-1, random_state=42)
 
     # Maybe hyper-tune here?
     clf.fit(X_train, y_train)
@@ -97,15 +100,16 @@ def main(args):
     # Save input format for model
     pd.DataFrame(columns=X_test.columns).to_csv('../serve_model/input_data_format.csv', index=False)
 
-    # Save model
-    if args.model == 'lightgbm':
-        clf.booster_.save_model(f'../serve_model/trained_{args.model}.txt')
+    outfile = open(f'../serve_model/trained_model', 'wb')
+    pickle.dump(clf, outfile)
+    outfile.close()
 
 
 if __name__ == "__main__":
     # Model and encode must be set when running script
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", help="model to train", type=str, choices=['lightgbm'], required=True)
+    parser.add_argument("--model", help="model to train", type=str, choices=['lightgbm', 'random_forest'],
+                        required=True)
     parser.add_argument("--encode", help="type of encoder to use", type=str, choices=['ordinal', 'one-hot'],
                         required=True)
     args = parser.parse_args()

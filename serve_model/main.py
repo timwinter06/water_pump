@@ -9,7 +9,9 @@ import category_encoders as ce
 
 
 # Load model
-clf = lgb.Booster(model_file='trained_lightgbm.txt')
+file = open('trained_model', 'rb')
+clf = pickle.load(file)
+file.close()
 # Load input format
 df_format = pd.read_csv('input_data_format.csv')
 # Load encoder
@@ -82,7 +84,7 @@ def get_predictions(input_data: WaterPumpFeatures):
     }
     input_df = df_format.append(input_dict, ignore_index=True)
     input_df = encoder.transform(input_df)
-    pred = clf.predict(input_df)
+    pred = clf.predict_proba(input_df)
     pred_dict = {key: pred[0][i] for i, key in enumerate(target_map.keys())}
     return pred_dict
 
